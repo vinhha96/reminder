@@ -117,14 +117,14 @@ VALUES (1, "Nạp điện thoại Viettel ngay hôm nay", "Hôm nay Viettel khuy
        (7, "Cần định danh tài khoản để nhận nhiều ưu đãi hơn", "Cần định danh tài khoản để nhận nhiều ưu đãi hơn", "1",
         4);
 
-INSERT IGNORE INTO `reminderdb`.`styles`(`id`, `textcolor`, `textcolorpress`, `textcolordisabled`,
-                                         `backgroundcolor`, `backgroundcolorpress`, `backgroundcolordisabled`,
-                                         `backgroundimage`)
-VALUES (1, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
+INSERT INTO `reminderdb`.`styles`
+(`id`, `text_color`, `text_color_press`, `text_color_disabled`, `background_color`, `background_color_press`,
+ `background_color_disabled`, `background_image`)
+VALUES (4, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
         "https://www.pexels.com/photo/beautiful-beauty-blue-bright-414612"),
-       (2, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
+       (5, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
         "https://gizmodo.com/some-of-the-most-spectacular-astronomy-images-of-2018-1827695259"),
-       (3, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
+       (6, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
         "https://gizmodo.com/some-of-the-most-spectacular-astronomy-images-of-2018-1827695259");
 
 INSERT IGNORE INTO `reminderdb`.`components`(`id`, `type`, `text`, `imageurl`, `style_id`, `action_id`, `content_id`)
