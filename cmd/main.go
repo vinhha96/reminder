@@ -19,35 +19,18 @@ func main() {
 	db.LogMode(true)
 
 	// Declare var for once object
-	var contents []models.Content
-	var styles []models.Style
 	var reminder []models.Reminder
 
 	// Check exist table inDB
 	fmt.Println("Exist table contents: ", db.HasTable(&models.Content{}))
 	fmt.Println("Exist table Reminder: ", db.HasTable(&models.Reminder{}))
 
-	// Get all record for table
-	db.Find(&contents)
-	db.Find(&styles)
-	db.Find(&reminder)
-
-	for i := range reminder {
-		db.Model(&reminder[i]).Related(&reminder[i].Content)
-		db.Model(&reminder[i].Content).Related(&reminder[i].Content.Action)
-
-	}
+	db.Set("gorm:auto_preload", true).Find(&reminder)
 
 	// Convert to Json object
-	res, _ := json.Marshal(contents)
-	res2, _ := json.Marshal(styles)
 	res3, _ := json.Marshal(reminder)
 
 	// Write result
-	fmt.Println(string(res))
-	fmt.Println()
-	fmt.Println(string(res2))
-	fmt.Println()
 	fmt.Println(string(res3))
 
 	defer db.Close()
