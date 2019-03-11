@@ -4,7 +4,7 @@ type Component struct {
 	ID        int
 	Type      int
 	Text      string
-	Imageurl  string
+	ImageUrl  string
 	Style     Style
 	StyleID   int
 	Action    Action

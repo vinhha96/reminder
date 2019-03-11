@@ -1,24 +1,31 @@
 /* CREATE DATABASE */
 
+CREATE DATABASE IF NOT EXISTS `master`;
+
+USE master;
+
+DROP DATABASE IF EXISTS `reminderdb`;
 
 CREATE DATABASE IF NOT EXISTS `reminderdb`;
 
+DROP DATABASE IF EXISTS `master`;
+
+
 USE reminderdb;
+
 
 /* CREATE TABLE */
 
-/*
-
 CREATE TABLE `styles`
 (
-  `id`                      int(11) NOT NULL,
-  `textcolor`               varchar(10) DEFAULT NULL,
-  `textcolorpress`          varchar(10) DEFAULT NULL,
-  `textcolordisabled`       varchar(10) DEFAULT NULL,
-  `backgroundcolor`         varchar(10) DEFAULT NULL,
-  `backgroundcolorpress`    varchar(10) DEFAULT NULL,
-  `backgroundcolordisabled` varchar(10) DEFAULT NULL,
-  `backgroundimage`         varchar(10) DEFAULT NULL,
+  `id`                        int(11) NOT NULL,
+  `text_color`                varchar(10)  DEFAULT NULL,
+  `text_color_press`          varchar(10)  DEFAULT NULL,
+  `text_color_disabled`       varchar(10)  DEFAULT NULL,
+  `background_color`          varchar(10)  DEFAULT NULL,
+  `background_color_press`    varchar(10)  DEFAULT NULL,
+  `background_color_disabled` varchar(10)  DEFAULT NULL,
+  `background_image`          varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -30,26 +37,6 @@ CREATE TABLE `actions`
   `url`  varchar(255) DEFAULT NULL,
   `type` int(11)      DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-CREATE TABLE `components`
-(
-  `id`         int(11) NOT NULL,
-  `type`       int(11)                                                 DEFAULT NULL,
-  `text`       varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `imageurl`   varchar(255)                                            DEFAULT NULL,
-  `style_id`   int(11)                                                 DEFAULT NULL,
-  `action_id`  int(11)                                                 DEFAULT NULL,
-  `content_id` int(11)                                                 DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `component_action_idx` (`action_id`),
-  KEY `component_content_idx` (`content_id`),
-  KEY `component_style_idx` (`style_id`),
-  CONSTRAINT `component_action` FOREIGN KEY (`action_id`) REFERENCES `actions` (`id`),
-  CONSTRAINT `component_content` FOREIGN KEY (`content_id`) REFERENCES `contents` (`id`),
-  CONSTRAINT `component_style` FOREIGN KEY (`style_id`) REFERENCES `styles` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
@@ -68,15 +55,34 @@ CREATE TABLE `contents`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
+CREATE TABLE `components`
+(
+  `id`         int(11) NOT NULL,
+  `type`       varchar(10)                                             DEFAULT NULL,
+  `text`       varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `image_url`  varchar(255)                                            DEFAULT NULL,
+  `style_id`   int(11)                                                 DEFAULT NULL,
+  `action_id`  int(11)                                                 DEFAULT NULL,
+  `content_id` int(11)                                                 DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `component_action_idx` (`action_id`),
+  KEY `component_content_idx` (`content_id`),
+  KEY `component_style_idx` (`style_id`),
+  CONSTRAINT `component_action` FOREIGN KEY (`action_id`) REFERENCES `actions` (`id`),
+  CONSTRAINT `component_content` FOREIGN KEY (`content_id`) REFERENCES `contents` (`id`),
+  CONSTRAINT `component_style` FOREIGN KEY (`style_id`) REFERENCES `styles` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
 CREATE TABLE `reminders`
 (
-  `id`         int(11)   NOT NULL,
-  `created_at` timestamp NULL   DEFAULT NULL,
-  `updated_at` timestamp NULL   DEFAULT NULL,
-  `deleted_at` timestamp NULL   DEFAULT NULL,
+  `id`         bigint(20) NOT NULL,
+  `created_at` timestamp  NULL  DEFAULT NULL,
+  `updated_at` timestamp  NULL  DEFAULT NULL,
+  `deleted_at` timestamp  NULL  DEFAULT NULL,
   `type`       int(10) unsigned DEFAULT NULL,
   `priority`   int(11)          DEFAULT NULL,
-  `due`        timestamp NULL   DEFAULT NULL,
+  `due`        timestamp  NULL  DEFAULT NULL,
   `content_id` int(11)          DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `reminder_content_idx` (`content_id`),
@@ -87,15 +93,14 @@ CREATE TABLE `reminders`
 
 CREATE TABLE `user_reminder`
 (
-  `userid`      int(11) NOT NULL,
-  `reminder_id` int(11) NOT NULL,
+  `userid`      bigint(20) NOT NULL,
+  `reminder_id` bigint(20) NOT NULL,
   PRIMARY KEY (`reminder_id`, `userid`),
   CONSTRAINT `user_reminder` FOREIGN KEY (`reminder_id`) REFERENCES `reminders` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
-*/
 
 /* DUMMY DATA: */
 
@@ -120,14 +125,14 @@ VALUES (1, "Nạp điện thoại Viettel ngay hôm nay", "Hôm nay Viettel khuy
 INSERT INTO `reminderdb`.`styles`
 (`id`, `text_color`, `text_color_press`, `text_color_disabled`, `background_color`, `background_color_press`,
  `background_color_disabled`, `background_image`)
-VALUES (4, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
+VALUES (1, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
         "https://www.pexels.com/photo/beautiful-beauty-blue-bright-414612"),
-       (5, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
+       (2, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
         "https://gizmodo.com/some-of-the-most-spectacular-astronomy-images-of-2018-1827695259"),
-       (6, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
+       (3, "#ff0000", "#ff0001", "#ff0001", "#ff0001", "#ff0001", "#ff0001",
         "https://gizmodo.com/some-of-the-most-spectacular-astronomy-images-of-2018-1827695259");
 
-INSERT IGNORE INTO `reminderdb`.`components`(`id`, `type`, `text`, `imageurl`, `style_id`, `action_id`, `content_id`)
+INSERT IGNORE INTO `reminderdb`.`components`(`id`, `type`, `text`, `image_url`, `style_id`, `action_id`, `content_id`)
 VALUES (1, "Button", "Nạp ngay", "", 1, 1, 1),
        (2, "Button", "Đóng", "", 2, 6, 1),
        (3, "Button", "Nạp ngay", "", 1, 1, 2),
